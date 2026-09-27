@@ -1,5 +1,7 @@
 package com.zufar.icedlatte.order.endpoint;
 
+import static com.zufar.icedlatte.order.service.validator.GetOrdersRequestValidator.validate;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import static com.zufar.icedlatte.order.service.validator.GetOrdersRequestValidator.validate;
+
 import com.zufar.icedlatte.common.http.ApiPaths;
 import com.zufar.icedlatte.openapi.dto.*;
 import com.zufar.icedlatte.order.service.OrderCreator;
@@ -51,7 +53,7 @@ public class OrderEndpoint implements com.zufar.icedlatte.openapi.order.api.Orde
             @RequestParam(required = false) final Integer year,
             @RequestParam(required = false) final LocalDate dateFrom,
             @RequestParam(required = false) final LocalDate dateTo) {
-        validate(dateFrom,dateTo);
+        validate(dateFrom, dateTo);
         var userId = currentUserProvider.getUserId();
         var pageable = orderPageRequestFactory.build(page, size, sortBy, sortDirection);
         var result = orderDetailProvider.getOrders(userId, status, year, dateFrom, dateTo, pageable);
