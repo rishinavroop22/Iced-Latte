@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import static com.zufar.icedlatte.order.service.validator.GetOrdersRequestValidator.validate;
 import com.zufar.icedlatte.common.http.ApiPaths;
 import com.zufar.icedlatte.openapi.dto.*;
 import com.zufar.icedlatte.order.service.OrderCreator;
@@ -18,6 +18,7 @@ import com.zufar.icedlatte.order.service.OrderReorderService;
 import com.zufar.icedlatte.order.service.lifecycle.OrderStatusTransitioner;
 import com.zufar.icedlatte.order.service.query.OrderDetailProvider;
 import com.zufar.icedlatte.security.api.CurrentUserProvider;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,7 @@ public class OrderEndpoint implements com.zufar.icedlatte.openapi.order.api.Orde
             @RequestParam(required = false) final Integer year,
             @RequestParam(required = false) final LocalDate dateFrom,
             @RequestParam(required = false) final LocalDate dateTo) {
+        validate(dateFrom,dateTo);
         var userId = currentUserProvider.getUserId();
         var pageable = orderPageRequestFactory.build(page, size, sortBy, sortDirection);
         var result = orderDetailProvider.getOrders(userId, status, year, dateFrom, dateTo, pageable);
