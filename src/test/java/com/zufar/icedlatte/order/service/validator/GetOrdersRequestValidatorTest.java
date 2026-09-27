@@ -1,5 +1,6 @@
 package com.zufar.icedlatte.order.service.validator;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
@@ -21,29 +22,37 @@ class GetOrdersRequestValidatorTest {
 
     @Test
     void dateFromBeforeDateToDoesNotThrow() {
-        GetOrdersRequestValidator.validate(
-                LocalDate.of(2026, 9, 10),
-                LocalDate.of(2026, 9, 20));
+        assertThatCode(() ->
+                GetOrdersRequestValidator.validate(
+                        LocalDate.of(2026, 9, 10),
+                        LocalDate.of(2026, 9, 20)))
+                .doesNotThrowAnyException();
     }
 
     @Test
     void equalDatesDoNotThrow() {
         LocalDate date = LocalDate.of(2026, 9, 10);
 
-        GetOrdersRequestValidator.validate(date, date);
+        assertThatCode(() ->
+                GetOrdersRequestValidator.validate(date, date))
+                .doesNotThrowAnyException();
     }
 
     @Test
     void nullDateFromDoesNotThrow() {
-        GetOrdersRequestValidator.validate(
-                null,
-                LocalDate.of(2026, 9, 20));
+        assertThatCode(() ->
+                GetOrdersRequestValidator.validate(
+                        null,
+                        LocalDate.of(2026, 9, 20)))
+                .doesNotThrowAnyException();
     }
 
     @Test
     void nullDateToDoesNotThrow() {
-        GetOrdersRequestValidator.validate(
-                LocalDate.of(2026, 9, 10),
-                null);
+        assertThatCode(() ->
+                GetOrdersRequestValidator.validate(
+                        LocalDate.of(2026, 9, 10),
+                        null))
+                .doesNotThrowAnyException();
     }
 }
